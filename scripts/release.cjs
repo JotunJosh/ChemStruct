@@ -81,7 +81,7 @@ rl.question("📝 Changelog für dieses Release:\n> ", (changelogText) => {
     execSync(buildCommand, { stdio: "inherit", env: { ...process.env } });
 
     // 📝 Release Notes auf GitHub ergänzen (via gh CLI)
-    const ghCommand = `gh release edit v${newVersion} --notes "${changelogText}"`;
+    const ghCommand = `gh release edit v${newVersion} --notes "${changelogText}" --draft=false`;
     execSync(ghCommand, { stdio: "inherit", env: { ...process.env } });
     console.log("🚀 Release Notes auf GitHub aktualisiert!");
 

@@ -1,6 +1,6 @@
 {
   "name": "chemstruct",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "ChemStruct – Der Layout-Planer für Schedule 1",
   "author": "JotunJosh",
   "type": "module",
@@ -15,7 +15,7 @@
     "i18n:template": "node scripts/generateTranslationTemplate.cjs",
     "i18n:check": "node scripts/checkTranslationFile.cjs",
     "i18n:fill": "node scripts/fillMissingTranslations.cjs",
-    "release": "node scripts/release.js"
+    "release": "node scripts/release.cjs"
   },
   "dependencies": {
     "i18next": "^24.2.3",

@@ -1,0 +1,75 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #111;
+    color: #e0e0e0;
+    border-radius: 12px;
+  }
+  
+  .toolbar {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .exportDialog {
+    border: 1px solid #555;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #1c1c1c;
+  }
+  
+  .objectList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .objectItem {
+    padding: 0.5rem;
+    border-radius: 8px;
+    background-color: #2a2a2a;
+  }
+  
+  .objectColor {
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin: 0 6px;
+    color: black;
+    font-weight: bold;
+    background-color: #ccc;
+  }
+  
+  .form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    background-color: #222;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .input {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .button {
+    background-color: #00e676;
+    color: black;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #00ff99;
+  }
+  

@@ -1,0 +1,45 @@
+extends: null
+
+appId: com.chemstruct.app
+productName: ChemStruct
+copyright: "© 2025 JotunJosh"
+icon: assets/icon  # ohne .ico-Endung
+
+directories:
+  output: release
+  buildResources: assets
+
+files:
+  - dist/**
+  - main/**
+  - data/**
+  - preload.cjs
+  - package.json
+  - buildings.json
+  - objects.json
+
+extraResources:  # 📂 Zusätzliche Ressourcen, die nach `resources/app/` kopiert werden
+  - from: data/buildings.json
+    to: buildings.json
+  - from: data/objects.json
+    to: objects.json
+  - from: preload.cjs
+    to: preload.cjs   
+
+extraMetadata:
+  main: main/electron-main.cjs
+
+asar: true
+
+win:
+  target: msi
+
+msi:
+  oneClick: false
+  perMachine: false
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: "ChemStruct"
+  menuCategory: true
+  upgradeCode: "867e7e18-9dca-4674-82c0-e87b70179b07"  # generische GUID (für Updates)
+  warningsAsErrors: false

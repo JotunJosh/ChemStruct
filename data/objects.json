@@ -1,0 +1,26 @@
+[
+  {
+    "id": "obj_1744230941206",
+    "name": "Mixer v2",
+    "description": "Automatische Mischen",
+    "width": 2,
+    "height": 5,
+    "color": "#99ff00"
+  },
+  {
+    "id": "obj_1",
+    "name": "Lagerregal",
+    "description": "Speichert Items",
+    "width": 2,
+    "height": 5,
+    "color": "#81c784"
+  },
+  {
+    "id": "obj_2",
+    "name": "Presse",
+    "description": "Verarbeitet Zutaten",
+    "width": 2,
+    "height": 2,
+    "color": "#9575cd"
+  }
+]

@@ -1,0 +1,34 @@
+{
+  "name": "chemstruct",
+  "version": "0.3.1",
+  "description": "ChemStruct – Der Layout-Planer für Schedule 1",
+  "author": "JotunJosh",
+  "type": "module",
+  "main": "main/electron-main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "electron .",
+    "dist": "electron-builder --win --config electron-builder.yml",
+    "clean": "rimraf build dist",
+    "full-build": "npm run clean && npm run build && npm run dist",
+    "i18n:template": "node scripts/generateTranslationTemplate.cjs",
+    "i18n:check": "node scripts/checkTranslationFile.cjs",
+    "i18n:fill": "node scripts/fillMissingTranslations.cjs",
+    "release": "node scripts/release.js"
+  },
+  "dependencies": {
+    "i18next": "^24.2.3",
+    "i18next-browser-languagedetector": "^8.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^15.4.1",
+    "react-router-dom": "^6.20.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "electron": "^28.1.0",
+    "electron-builder": "^26.0.12",
+    "vite": "^5.2.0"
+  }
+}

@@ -1,0 +1,42 @@
+# Node.js dependencies
+/node_modules/
+.pnp/
+.pnp.js
+
+# Testing
+/coverage/
+
+# Production builds
+/build/
+/dist/
+/out/      
+/release/          
+
+# Electron build cache & installer artefakte
+/*.exe
+/*.dmg
+/*.AppImage
+/*.snap
+/*.msi
+*.blockmap
+/latest.yml
+*.zip
+*.7z
+
+# Log & temp
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Environment configs
+.env
+.env.*
+!.env.example
+
+# System files
+.DS_Store
+Thumbs.db
+*.swp
+.idea/              
+.vscode/             

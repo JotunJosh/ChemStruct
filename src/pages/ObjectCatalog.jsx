@@ -6,8 +6,8 @@ export default function ObjectCatalog() {
   const [objects, setObjects] = useState([]);
   const [form, setForm] = useState({
     id: '',
-    name: '',
-    description: '',
+    name: {},
+    description: {},
     width: 1,
     height: 1,
     color: '#cccccc'
@@ -16,7 +16,9 @@ export default function ObjectCatalog() {
 
   const [exportDialogOpen, setExportDialogOpen] = useState(false);
   const [selectedObjectIds, setSelectedObjectIds] = useState([]);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language;
+  const [filterText, setFilterText] = useState("");
 
   useEffect(() => {
     window.api.readJsonFile('objects.json')
@@ -24,16 +26,30 @@ export default function ObjectCatalog() {
       .catch(console.error);
   }, []);
 
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: name === 'width' || name === 'height' ? parseInt(value) : value });
+    if (name === 'width' || name === 'height') {
+      setForm({ ...form, [name]: parseInt(value) });
+    } else if (name === 'name' || name === 'description') {
+      setForm({
+        ...form,
+        [name]: {
+          ...form[name],
+          [currentLang]: value
+        }
+      });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
   };
 
   const resetForm = () => {
     setForm({
       id: '',
-      name: '',
-      description: '',
+      name: {},
+      description: {},
       width: 1,
       height: 1,
       color: '#cccccc'
@@ -122,6 +138,18 @@ export default function ObjectCatalog() {
     }
   };
 
+  const getLocalizedText = (obj, field) => {
+    const value = obj[field];
+    if (typeof value === 'object') {
+      return value[currentLang] || value['en'] || '???';
+    }
+    return value;
+  };
+
+  const filteredObjects = [...objects]
+  .filter((obj) => getLocalizedText(obj, "name").toLowerCase().includes(filterText.toLowerCase()))
+  .sort((a, b) => getLocalizedText(a, "name").localeCompare(getLocalizedText(b, "name")));
+
   return (
     <div className={styles.container}>
       <h2>Objekt-Katalog</h2>
@@ -149,7 +177,7 @@ export default function ObjectCatalog() {
                       }
                     }}
                   />
-                  {obj.name}
+                  {getLocalizedText(obj, "name")}
                 </label>
               </li>
             ))}
@@ -162,16 +190,16 @@ export default function ObjectCatalog() {
       <form onSubmit={handleSubmit} className={styles.form}>
         <input
           name="name"
-          placeholder={t("objectForm.name")}
-          value={form.name}
+          placeholder={t("objectForm.name") + ` (${currentLang.toUpperCase()})`}
+          value={form.name?.[currentLang] || ""}
           onChange={handleChange}
           required
           className={styles.input}
         />
         <input
           name="description"
-          placeholder={t("objectForm.description")}
-          value={form.description}
+          placeholder={t("objectForm.description") + ` (${currentLang.toUpperCase()})`}
+          value={form.description?.[currentLang] || ""}
           onChange={handleChange}
           required
           className={styles.input}
@@ -211,24 +239,34 @@ export default function ObjectCatalog() {
             {t("cancel")}
           </button>
         )}
+     </form>
+
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <input
+          type="text"
+          placeholder={t("objectForm.filter") || "🔍 Filter..."}
+          value={filterText}
+          onChange={(e) => setFilterText(e.target.value)}
+          className={styles.input}
+      />
       </form>
 
-      <ul className={styles.objectList}>
-        {objects.map((obj) => (
-          <li key={obj.id} className={styles.objectItem}>
-            <div>
-              <strong>{obj.name}</strong> ({obj.width}x{obj.height}) –
-              <span className={styles.objectColor} style={{ backgroundColor: obj.color }}>{obj.color}</span>
-              <br />
-              <em>{obj.description}</em>
-            </div>
-            <div>
-              <button className={styles.button} onClick={() => handleEdit(obj)}>{t("edit")}</button>
-              <button className={styles.button} onClick={() => handleDelete(obj.id)}>{t("delete")}</button>
-            </div>
-          </li>
-        ))}
-      </ul>
+              <ul className={styles.objectList}>
+          {filteredObjects.map((obj) => (
+            <li key={obj.id} className={styles.objectItem}>
+              <div>
+                <strong>{getLocalizedText(obj, "name")}</strong> ({obj.width}x{obj.height}) –
+                <span className={styles.objectColor} style={{ backgroundColor: obj.color }}>{obj.color}</span>
+                <br />
+                <em>{getLocalizedText(obj, "description")}</em>
+              </div>
+              <div>
+                <button className={styles.button} onClick={() => handleEdit(obj)}>{t("edit")}</button>
+                <button className={styles.button} onClick={() => handleDelete(obj.id)}>{t("delete")}</button>
+              </div>
+            </li>
+          ))}
+          </ul>
     </div>
   );
 }

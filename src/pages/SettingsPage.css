@@ -149,3 +149,25 @@
     color: #000;
   }
   
+  .language-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #00ff88;
+    background: #111;
+    color: #d0ffd6;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .language-section .button-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .settings-section h2 {
+    margin-bottom: 0.5rem;
+    color: #00ff88;
+  }

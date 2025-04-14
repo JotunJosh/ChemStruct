@@ -2,14 +2,15 @@ const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const fileManager = require('./fileManager.cjs');
+const { importCommunityLanguage } = require('../src/utils/importCommunityLanguage.cjs');
 
 app.whenReady().then(() => {
   const userDataPath = app.getPath('userData');
   console.log("📂 App speichert Daten in:", userDataPath); // 🖨 Terminal-Ausgabe
 
-  if (!app.isPackaged) {
-    shell.openPath(userDataPath); // 🪟 Öffnet Explorer/Finder nur im Dev-Modus
-  }
+  // if (!app.isPackaged) {
+  //   shell.openPath(userDataPath); // 🪟 Öffnet Explorer/Finder nur im Dev-Modus
+  // }
 
   fileManager.ensureFileExists('buildings.json');
   fileManager.ensureFileExists('objects.json');

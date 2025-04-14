@@ -1,5 +1,7 @@
 {
   "appName": "",
+  "splashWelcome": "",
+  "splashText": "",
   "layoutPlanner": "",
   "layoutSave": "",
   "layoutLoad": "",
@@ -52,6 +54,10 @@
     "title": "",
     "language": "",
     "darkMode": "",
+    "importCommunityTranslation": "",
+    "downloadTemplate": "",
+    "resetalert": "",
+    "resetdone": "",
     "links": {
       "title": ""
     },
@@ -67,6 +73,15 @@
     "description": "",
     "width": "",
     "height": "",
-    "color": ""
+    "color": "",
+    "filter": ""
+  },
+  "updateNotice": {
+    "newversionalert": "",
+    "versioninfo1": "",
+    "versioninfo2": "",
+    "later": "",
+    "download_github": "",
+    "download_nexus": ""
   }
 }

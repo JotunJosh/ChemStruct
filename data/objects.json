@@ -1,26 +1,482 @@
 [
   {
-    "id": "obj_1744230941206",
-    "name": "Mixer v2",
-    "description": "Automatische Mischen",
-    "width": 2,
-    "height": 5,
-    "color": "#99ff00"
-  },
-  {
-    "id": "obj_1",
-    "name": "Lagerregal",
-    "description": "Speichert Items",
-    "width": 2,
-    "height": 5,
-    "color": "#81c784"
-  },
-  {
-    "id": "obj_2",
-    "name": "Presse",
-    "description": "Verarbeitet Zutaten",
+    "id": "obj_1744550876600",
+    "name": {
+      "en": "Grow Tent",
+      "de": "Grow-Zelt",
+      "fr": "Tente de culture"
+    },
+    "description": {
+      "en": "Basic pot",
+      "de": "Basis Topf",
+      "fr": "Pot de base"
+    },
     "width": 2,
     "height": 2,
-    "color": "#9575cd"
+    "color": "#4caf50"
+  },
+  {
+    "id": "obj_1744550915280",
+    "name": {
+      "en": "Pot Sprinkler",
+      "de": "Topf-Sprinkler",
+      "fr": "Arroseur de pots"
+    },
+    "description": {
+      "en": "Waters pots",
+      "de": "Wässert Töpfe",
+      "fr": "Arrose les pots"
+    },
+    "width": 2,
+    "height": 1,
+    "color": "#81d4fa"
+  },
+  {
+    "id": "obj_1744550948494",
+    "name": {
+      "en": "Soil Pourer",
+      "de": "Erde-Einfüller",
+      "fr": "Verseur de terre"
+    },
+    "description": {
+      "en": "Fills soil into pot",
+      "de": "Füllt Erde in Topf",
+      "fr": "Remplit de terre les pots"
+    },
+    "width": 2,
+    "height": 1,
+    "color": "#8d6e63"
+  },
+  {
+    "id": "obj_1744550973869",
+    "name": {
+      "en": "Packing Station",
+      "de": "Verpackstation",
+      "fr": "Poste d'emballage"
+    },
+    "description": {
+      "en": "Packs products",
+      "de": "Verpack Produkte",
+      "fr": "Emballe les produits"
+    },
+    "width": 4,
+    "height": 2,
+    "color": "#9e9e9e"
+  },
+  {
+    "id": "obj_1744551024351",
+    "name": {
+      "en": "Packing Station Mk II",
+      "de": "Verpackstation Mk II",
+      "fr": "Poste d'emballage Mk II"
+    },
+    "description": {
+      "en": "Fast packing",
+      "de": "Schnelles Verpacken",
+      "fr": "Emballage rapide"
+    },
+    "width": 4,
+    "height": 2,
+    "color": "#b0bec5"
+  },
+  {
+    "id": "obj_1744551061978",
+    "name": {
+      "en": "Bed",
+      "de": "Bett",
+      "fr": "Lit"
+    },
+    "description": {
+      "en": "Bed for player/NPC",
+      "de": "Schlafplatz Spieler/NPC",
+      "fr": "Lit pour joueur/PNJ"
+    },
+    "width": 3,
+    "height": 4,
+    "color": "#a1887f"
+  },
+  {
+    "id": "obj_1744551286794",
+    "name": {
+      "en": "Coffee Table",
+      "de": "Couchtisch",
+      "fr": "Table basse"
+    },
+    "description": {
+      "en": "Storage 3 slots",
+      "de": "Lager 3 Slots",
+      "fr": "Stockage 3 emplacements"
+    },
+    "width": 4,
+    "height": 2,
+    "color": "#6d4c41"
+  },
+  {
+    "id": "obj_1744551332490",
+    "name": {
+      "en": "Wodden Square Table",
+      "de": "Holztisch (Quadrat)",
+      "fr": "Table carrée en bois"
+    },
+    "description": {
+      "en": "Storage 3 slots",
+      "de": "Lager 3 Slots",
+      "fr": "Stockage 3 emplacements"
+    },
+    "width": 2,
+    "height": 2,
+    "color": "#8d6e63"
+  },
+  {
+    "id": "obj_1744551357008",
+    "name": {
+      "en": "Metal Sqare Table",
+      "de": "Metalltisch (Quadrat)",
+      "fr": "Table carrée en métal"
+    },
+    "description": {
+      "en": "Storage 3 slots",
+      "de": "Lager 3 Slots",
+      "fr": "Stockage 3 emplacements"
+    },
+    "width": 2,
+    "height": 2,
+    "color": "#90a4ae"
+  },
+  {
+    "id": "obj_1744551367444",
+    "name": {
+      "en": "Floor Lamp",
+      "de": "Stehlampe",
+      "fr": "Lampe sur pied"
+    },
+    "description": {
+      "en": "Light",
+      "de": "Licht",
+      "fr": "Lumière"
+    },
+    "width": 1,
+    "height": 1,
+    "color": "#fff59d"
+  },
+  {
+    "id": "obj_1744551386577",
+    "name": {
+      "en": "TV",
+      "de": "Fernseher",
+      "fr": "Télé"
+    },
+    "description": {
+      "en": "Minigames",
+      "de": "Minigames",
+      "fr": "Mini-jeux"
+    },
+    "width": 4,
+    "height": 2,
+    "color": "#212121"
+  },
+  {
+    "id": "obj_1744551415451",
+    "name": {
+      "en": "Smal Storage Rack",
+      "de": "Kleines Regal",
+      "fr": "Étagère petite"
+    },
+    "description": {
+      "en": "Storage 4 slots",
+      "de": "Lager 4 Slots",
+      "fr": "Stockage 4 emplacements"
+    },
+    "width": 2,
+    "height": 1,
+    "color": "#cfd8dc"
+  },
+  {
+    "id": "obj_1744551466368",
+    "name": {
+      "en": "Medium Storage Rack",
+      "de": "Mittleres Regal",
+      "fr": "Étagère moyenne"
+    },
+    "description": {
+      "en": "Storage 6 slots",
+      "de": "Lager 6 Slots",
+      "fr": "Stockage 6 emplacements"
+    },
+    "width": 3,
+    "height": 1,
+    "color": "#b0bec5"
+  },
+  {
+    "id": "obj_1744551487151",
+    "name": {
+      "en": "Large Storage Rack",
+      "de": "Großes Regal",
+      "fr": "Grande étagère"
+    },
+    "description": {
+      "en": "Storage 8 slots",
+      "de": "Lager 8 Slots",
+      "fr": "Stockage 8 emplacements"
+    },
+    "width": 4,
+    "height": 1,
+    "color": "#90a4ae"
+  },
+  {
+    "id": "obj_1744551518520",
+    "name": {
+      "en": "Toilet",
+      "de": "Toilette",
+      "fr": "Toilettes"
+    },
+    "description": {
+      "en": "Flushable",
+      "de": "Flushable",
+      "fr": "Chasse d'eau"
+    },
+    "width": 2,
+    "height": 2,
+    "color": "#e0f7fa"
+  },
+  {
+    "id": "obj_1744551535541",
+    "name": {
+      "en": "Display Cabinet",
+      "de": "Vitrinenschrank",
+      "fr": "Vitrine"
+    },
+    "description": {
+      "en": "Storage 4 slots",
+      "de": "Lager 4 Slots",
+      "fr": "Stockage 4 emplacements"
+    },
+    "width": 3,
+    "height": 2,
+    "color": "#ffe082"
+  },
+  {
+    "id": "obj_1744551566352",
+    "name": {
+      "en": "Trash Can",
+      "de": "Mülleimer",
+      "fr": "Poubelle"
+    },
+    "description": {
+      "en": "Trash",
+      "de": "Müll",
+      "fr": "Déchets"
+    },
+    "width": 2,
+    "height": 2,
+    "color": "#757575"
+  },
+  {
+    "id": "obj_1744551600089",
+    "name": {
+      "en": "Mixing Station",
+      "de": "Mischstation",
+      "fr": "Station de mélange"
+    },
+    "description": {
+      "en": "Mixes products",
+      "de": "Mischt Produkte zusammen",
+      "fr": "Mélange des produits"
+    },
+    "width": 4,
+    "height": 2,
+    "color": "#ffab91"
+  },
+  {
+    "id": "obj_1744551745843",
+    "name": {
+      "en": "Golden Toilet",
+      "de": "Goldene Toilette",
+      "fr": "Toilettes dorées"
+    },
+    "description": {
+      "en": "Flush with style",
+      "de": "Fush mit Stil",
+      "fr": "Chasse d'eau stylée"
+    },
+    "width": 2,
+    "height": 2,
+    "color": "#ffd700"
+  },
+  {
+    "id": "obj_1744551773851",
+    "name": {
+      "en": "Grandfather Clock",
+      "de": "Standuhr",
+      "fr": "Horloge comtoise"
+    },
+    "description": {
+      "en": "Shows time",
+      "de": "Zeig Zeit",
+      "fr": "Affiche l'heure"
+    },
+    "width": 2,
+    "height": 1,
+    "color": "#5d4037"
+  },
+  {
+    "id": "obj_1744551800897",
+    "name": {
+      "en": "Safe",
+      "de": "Tresor",
+      "fr": "Coffre-fort"
+    },
+    "description": {
+      "en": "Storage 8 slots",
+      "de": "Lager 8 Slots",
+      "fr": "Stockage 8 emplacements"
+    },
+    "width": 2,
+    "height": 2,
+    "color": "#546e7a"
+  },
+  {
+    "id": "obj_1744552412953",
+    "name": {
+      "en": "Plastic Pot",
+      "de": "Plastiktopf",
+      "fr": "Pot en plastique"
+    },
+    "description": {
+      "en": "Plant pot",
+      "de": "Pflanzpot",
+      "fr": "Pot de plante"
+    },
+    "width": 2,
+    "height": 2,
+    "color": "#e0e0e0"
+  },
+  {
+    "id": "obj_1744552463193",
+    "name": {
+      "en": "Moisture-Preserving Pot",
+      "de": "Feuchthalte-Topf",
+      "fr": "Pot conservateur d'humidité"
+    },
+    "description": {
+      "en": "Plant pot",
+      "de": "Pflanzpot",
+      "fr": "Pot de plante"
+    },
+    "width": 2,
+    "height": 2,
+    "color": "#aed581"
+  },
+  {
+    "id": "obj_1744552474516",
+    "name": {
+      "en": "Air Pot",
+      "de": "Lufttopf",
+      "fr": "Pot aéré"
+    },
+    "description": {
+      "en": "Plant pot",
+      "de": "Pflanzpot",
+      "fr": "Pot de plante"
+    },
+    "width": 2,
+    "height": 2,
+    "color": "#b3e5fc"
+  },
+  {
+    "id": "obj_1744552493559",
+    "name": {
+      "en": "Drying Rack",
+      "de": "Trockengestell",
+      "fr": "Étagère de séchage"
+    },
+    "description": {
+      "en": "Dries products",
+      "de": "Trocknet Produkte",
+      "fr": "Sèche les produits"
+    },
+    "width": 3,
+    "height": 2,
+    "color": "#ffe0b2"
+  },
+  {
+    "id": "obj_1744552509870",
+    "name": {
+      "en": "Brick Press",
+      "de": "Ziegelpresse",
+      "fr": "Presse à briques"
+    },
+    "description": {
+      "en": "Presses products into bricks",
+      "de": "Presst Produkte in Barren",
+      "fr": "Presse les produits en briques"
+    },
+    "width": 2,
+    "height": 2,
+    "color": "#d7ccc8"
+  },
+  {
+    "id": "obj_1744552546975",
+    "name": {
+      "en": "Mixing Station Mk2",
+      "de": "Mischstation Mk2",
+      "fr": "Station de mélange Mk2"
+    },
+    "description": {
+      "en": "Mixes more products",
+      "de": "Mischt mehr Produkte zusammen",
+      "fr": "Mélange plus de produits"
+    },
+    "width": 4,
+    "height": 2,
+    "color": "#f48fb1"
+  },
+  {
+    "id": "obj_1744573968428",
+    "name": {
+      "en": "Chemistry Station",
+      "de": "Chemie-Station",
+      "fr": "Station de chimie"
+    },
+    "description": {
+      "en": "Produces products",
+      "de": "Stellt Produkte her",
+      "fr": "Produit des articles"
+    },
+    "width": 4,
+    "height": 2,
+    "color": "#5c2d2d"
+  },
+  {
+    "id": "obj_1744573987151",
+    "name": {
+      "en": "Lab Oven",
+      "de": "Laborofen",
+      "fr": "Four de laboratoire"
+    },
+    "description": {
+      "en": "Bakes products",
+      "de": "Backt Produkte",
+      "fr": "Cuit les produits"
+    },
+    "width": 4,
+    "height": 2,
+    "color": "#7f9a47"
+  },
+  {
+    "id": "obj_1744574039796",
+    "name": {
+      "en": "Cauldron",
+      "de": "Kessel",
+      "fr": "Chaudron"
+    },
+    "description": {
+      "en": "Ferments products",
+      "de": "Fermentiert Produkte",
+      "fr": "Fermente les produits"
+    },
+    "width": 4,
+    "height": 4,
+    "color": "#322d7c"
   }
 ]

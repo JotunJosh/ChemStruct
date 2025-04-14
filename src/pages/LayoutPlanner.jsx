@@ -17,7 +17,8 @@ export default function LayoutPlanner() {
   const [savedLayouts, setSavedLayouts] = useState([]);
   const [selectedSavedLayout, setSelectedSavedLayout] = useState('');
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language;
   const cellSize = 32;
 
   useEffect(() => {
@@ -45,6 +46,18 @@ export default function LayoutPlanner() {
   const setPlacedObjects = (newList) => {
     setLayoutStates(prev => ({ ...prev, [currentLayoutKey]: newList }));
   };
+
+  const getLocalizedText = (obj, field) => {
+    const value = obj[field];
+    if (typeof value === 'object') {
+      return value[currentLang] || value['en'] || '???';
+    }
+    return value;
+  };
+
+  const sortedObjects = [...objects].sort((a, b) =>
+    getLocalizedText(a, "name").localeCompare(getLocalizedText(b, "name"))
+  );
 
   const selectedObjectBase = objects.find(o => o.id === selectedObjectId);
   const selectedObject = selectedObjectBase
@@ -179,7 +192,13 @@ export default function LayoutPlanner() {
 
       {/* Toolbar: Reihe 2 */}
       <div className={styles.toolbar}>
-        <input type="text" placeholder={t("layoutname")} value={layoutName} onChange={e => setLayoutName(e.target.value)} className={styles.input} />
+      <input
+            type="text"
+            placeholder={t("layoutname")}
+            value={layoutName}
+            onChange={e => setLayoutName(e.target.value)}
+            className={styles.input}
+          />
         <button onClick={handleStoreLayout}>💾 {t("layoutSave")}</button>
         <select className={styles.input} value={selectedSavedLayout} onChange={(e) => {
           const name = e.target.value;
@@ -197,7 +216,7 @@ export default function LayoutPlanner() {
       <div className={styles.toolbar}>
         <select className={styles.input} value={selectedObjectId ?? ''} onChange={e => setSelectedObjectId(e.target.value || null)}>
           <option value="">{t("objectselect")}</option>
-          {objects.map(obj => <option key={obj.id} value={obj.id}>{obj.name} ({obj.width}×{obj.height})</option>)}
+          {sortedObjects.map(obj => <option key={obj.id} value={obj.id}>{getLocalizedText(obj, "name")} ({obj.width}×{obj.height})</option>)}
         </select>
         <button onClick={() => setRotation((prev) => (prev + 90) % 360)}>🔄 {t("turn")}</button>
       </div>
@@ -226,13 +245,24 @@ export default function LayoutPlanner() {
 
         <div className={styles.objectLayer}>
           {placedObjects.map((obj, i) => (
-            <div key={`obj-${i}`} className={styles.objectBlock} style={{ top: obj.pos.row * cellSize, left: obj.pos.col * cellSize, width: obj.width * cellSize, height: obj.height * cellSize, backgroundColor: obj.color }} title={obj.name}>
-              {obj.name[0]}
-            </div>
+            <div
+            key={`obj-${i}`}
+            className={styles.objectBlock}
+            style={{
+              top: obj.pos.row * cellSize,
+              left: obj.pos.col * cellSize,
+              width: obj.width * cellSize,
+              height: obj.height * cellSize,
+              backgroundColor: obj.color
+            }}
+            title={getLocalizedText(obj, 'name')}
+          >
+            <span className={styles.objectLabel}>{getLocalizedText(obj, 'name')}</span>
+          </div>
           ))}
           {hoverCell && selectedObject && canPlaceObject(hoverCell.row, hoverCell.col, selectedObject) && (
             <div className={`${styles.objectBlock} ${styles.previewObject}`} style={{ top: hoverCell.row * cellSize, left: hoverCell.col * cellSize, width: selectedObject.width * cellSize, height: selectedObject.height * cellSize, backgroundColor: selectedObject.color }}>
-              {selectedObject.name[0]}
+              {getLocalizedText(selectedObject, 'name')[0]}
             </div>
           )}
         </div>

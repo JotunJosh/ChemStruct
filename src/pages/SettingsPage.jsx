@@ -11,6 +11,13 @@ const SettingsPage = () => {
   const [darkMode, setDarkMode] = useState(storedDarkMode);
   const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem("language") || "en");
   const { electronAPI } = window;
+  const [availableLanguages, setAvailableLanguages] = useState([]);
+
+useEffect(() => {
+  electronAPI.getAvailableLanguages().then((langs) => {
+    setAvailableLanguages(langs);
+  });
+}, []);
 
   console.log("🔍 electronAPI:", window.electronAPI);
   console.log("🔍 openExternalLink:", window.electronAPI?.openExternalLink);
@@ -39,24 +46,97 @@ const SettingsPage = () => {
       <h1>{t("settings.title")}</h1>
 
       {/* 🌐 Sprache */}
-      <div className="settings-section">
-        <h2>{t("settings.language")}</h2>
-        <div className="button-group">
-          <button onClick={() => changeLanguage("de")}>🇩🇪 {t("language.german")}</button>
-          <button onClick={() => changeLanguage("en")}>🇺🇸 {t("language.english")}</button>
-          <button onClick={() => changeLanguage("fr")}>🇫🇷 {t("language.french")}</button>
-        </div>
-      </div>
+      <div className="settings-section language-section">
+              <h2>{t("settings.language")}</h2>
+              <select
+                className="language-select"
+                value={selectedLanguage}
+                onChange={async (e) => {
+                  const langCode = e.target.value;
+                  console.log("📦 Wechsle Sprache zu:", langCode);
+                  setSelectedLanguage(langCode);
+                  localStorage.setItem("language", langCode);
+
+                  try {
+                    if (langCode.startsWith("community:")) {
+                      const json = await window.electronAPI.loadLanguageFile(langCode);
+                      if (json) {
+                        i18n.addResourceBundle(langCode, "translation", json, true, true);
+                      } else {
+                        console.warn("⚠️ Keine gültige Übersetzung erhalten!");
+                      }
+                    }
+
+                    await i18n.changeLanguage(langCode);
+                  } catch (err) {
+                    console.error("❌ Fehler beim Sprachwechsel:", err);
+                  }
+                }}
+              >
+                      {availableLanguages
+              .filter((l) => !l.isCommunity)
+              .map((lang) => (
+                <option key={lang.code} value={lang.code}>
+                  {lang.name}
+                </option>
+              ))}
+            <optgroup label="Community">
+              {availableLanguages
+                .filter((l) => l.isCommunity)
+                .map((lang) => (
+                  <option key={lang.code} value={lang.code}>
+                    {lang.name}
+                  </option>
+                ))}
+            </optgroup>
+          </select>
+
+          <div className="button-row">
+    <button onClick={async () => {
+      try {
+        const filename = await window.electronAPI.importCommunityTranslation();
+        if (filename) {
+          alert(`✅ Importiert: ${filename}`);
+          const refreshedLangs = await window.electronAPI.getAvailableLanguages();
+          setAvailableLanguages(refreshedLangs);
+          const newLangCode = `community:${filename.replace(".translation.json", "")}`;
+          setSelectedLanguage(newLangCode);
+          const json = await window.electronAPI.loadLanguageFile(newLangCode);
+          if (json) i18n.addResourceBundle(newLangCode, "translation", json, true, true);
+          await i18n.changeLanguage(newLangCode);
+          localStorage.setItem("language", newLangCode);
+        }
+      } catch (err) {
+        console.error("❌ Fehler beim Import:", err);
+        alert("❌ Fehler beim Import der Datei.");
+      }
+    }}>
+      ➕ {t("settings.importCommunityTranslation") || "Community-Übersetzung importieren"}
+    </button>
+
+    <button onClick={async () => {
+      try {
+        await window.electronAPI.downloadLanguageTemplate();
+        alert("✅ Template-Datei erfolgreich heruntergeladen!");
+      } catch (err) {
+        console.error("❌ Fehler beim Herunterladen der Template-Datei:", err);
+        alert("❌ Fehler beim Herunterladen der Template-Datei.");
+      }
+    }}>
+      ⬇️ {t("settings.downloadTemplate") || "Template-Datei herunterladen"}
+    </button>
+  </div>
+</div>
 
             <button
         onClick={async () => {
-          const confirm = window.confirm("⚠️ Bist du sicher? Alle Layouts & Objekte werden überschrieben!");
+          const confirm = window.confirm(t("settings.resetalert"));
           if (!confirm) return;
 
           try {
             await window.api.resetJsonFile('objects.json');
             await window.api.resetJsonFile('buildings.json');
-            alert("✅ Zurückgesetzt! Bitte App neu starten oder Seite neu laden.");
+            alert(t("settings.resetdone"));
           } catch (err) {
             console.error("❌ Fehler beim Zurücksetzen:", err);
             alert("❌ Fehler beim Zurücksetzen – siehe Konsole.");

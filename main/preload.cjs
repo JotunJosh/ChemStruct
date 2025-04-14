@@ -29,6 +29,7 @@ contextBridge.exposeInMainWorld('api', {
   writeFile: (filePath, content) => ipcRenderer.invoke('writeFile', filePath, content),
   showOpenDialog: (fileType) => ipcRenderer.invoke('showOpenDialog', fileType),
   readFile: (filePath) => ipcRenderer.invoke('readFile', filePath),
+  downloadLanguageTemplate: () => ipcRenderer.invoke('download-language-template'),
 });
 
 contextBridge.exposeInMainWorld("electronAPI", {
@@ -77,6 +78,10 @@ contextBridge.exposeInMainWorld("electronAPI", {
   // 🧪 Gibt zurück, ob die App im Entwicklungsmodus läuft
   // Returns whether the app is running in development mode
   isDev: () => ipcRenderer.invoke("is-dev"),
+
+  getAvailableLanguages: () => ipcRenderer.invoke('get-available-languages'),
+  importCommunityTranslation: () => ipcRenderer.invoke('import-community-translation'),
+  loadLanguageFile: (langCode) => ipcRenderer.invoke('load-language-file', langCode),
 });
 
 /**

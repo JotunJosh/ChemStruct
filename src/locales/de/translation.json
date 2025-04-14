@@ -1,5 +1,7 @@
 {
     "appName": "ChemStruct",
+    "splashWelcome": "Willkommen bei ChemStruct",
+    "splashText": "Struktur-Netzwerk wird geladen...",
     "layoutPlanner": "Layout-Planer",
     "layoutSave": "Layout speichern",
     "layoutLoad": "Exportiertes Layout laden",
@@ -52,6 +54,10 @@
       "title": "Einstellungen",
       "language": "Sprache",
       "darkMode": "Dark Mode",
+      "importCommunityTranslation": "Community-Übersetzung importieren",
+      "downloadTemplate":"Aktuelle Template-Datei herunterladen",
+      "resetalert":"⚠️ Bist du sicher? Alle Grundrisse & Objekte werden überschrieben!",
+      "resetdone":"✅ Zurückgesetzt! Bitte App neu starten oder Seite neu laden.",
       "links": {
         "title": "Externe Links"
       },
@@ -67,7 +73,15 @@
         "description": "Beschreibung",
         "width": "Breite",
         "height": "Höhe",
-        "color": "Farbe"
+        "color": "Farbe",
+        "filter": "Objekte filtern ..."
+    },
+    "updateNotice": {
+        "newversionalert": "Neue Version verfügbar!",
+        "versioninfo1": "Version ",
+        "versioninfo2": "ist jetzt verfügbar!",
+        "later": "später",
+        "download_github": "Download von GitHub",
+        "download_nexus": "Download von NexusMods"
     }
-  }
-  
+}

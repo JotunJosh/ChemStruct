@@ -131,3 +131,24 @@ button:hover {
   pointer-events: none;
   border: 1px dashed var(--accent-green);
 }
+
+.objectBlock {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none; /* <<< Wichtig! */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 2px;
+  text-align: center;
+}
+
+.objectLabel {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  font-size: 0.75rem;
+  pointer-events: auto; /* <<< Nur der Text ist interaktiv */
+}

@@ -9,7 +9,8 @@ export function useUpdateChecker() {
     async function check() {
       try {
         const currentVersion = await window.electronAPI.getAppVersion();
-        const response = await fetch("https://api.github.com/repos/JotunJosh/chemstruct/releases/latest");
+        const response = await fetch("https://api.github.com/repos/JotunJosh/chemstruct/releases/latest"); // richtige URL
+        // const response = await fetch("https://api.github.com/repos/JotunJosh/huntmate/releases/latest"); // Debug zum Testen
         const data = await response.json();
         const remoteVersion = data.tag_name.replace(/^v/, '');
 

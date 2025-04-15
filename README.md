@@ -1,6 +1,6 @@
 # ChemStruct
 
-![version](https://img.shields.io/badge/version-0.4.0-blue.svg)
+![version](https://img.shields.io/badge/version-0.5.0-blue.svg)
 ![license](https://img.shields.io/badge/license-MIT-green.svg)
 ![platform](https://img.shields.io/badge/platform-Electron-informational)
 ![issues](https://img.shields.io/github/issues/JotunJosh/chemstruct)

@@ -13,6 +13,7 @@ files:
   - dist/**
   - main/**
   - data/**
+  - src/data/**
   - preload.cjs
   - package.json
   - buildings.json
@@ -24,7 +25,9 @@ extraResources:  # 📂 Zusätzliche Ressourcen, die nach `resources/app/` kopie
   - from: data/objects.json
     to: objects.json
   - from: preload.cjs
-    to: preload.cjs   
+    to: preload.cjs
+  - from: src/data/locales
+    to: locales   
 
 extraMetadata:
   main: main/electron-main.cjs

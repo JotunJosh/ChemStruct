@@ -17,6 +17,8 @@
   "add": "",
   "turn": "",
   "cancel": "",
+  "rows": "",
+  "columns": "",
   "datareset": "",
   "addObject": "",
   "addBuilding": "",
@@ -74,7 +76,9 @@
     "width": "",
     "height": "",
     "color": "",
-    "filter": ""
+    "filter": "",
+    "filterLabel": "",
+    "filterPlaceholder": ""
   },
   "updateNotice": {
     "newversionalert": "",

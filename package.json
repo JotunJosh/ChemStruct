@@ -1,6 +1,6 @@
 {
   "name": "chemstruct",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "ChemStruct – Der Layout-Planer für Schedule 1",
   "author": "JotunJosh",
   "type": "module",

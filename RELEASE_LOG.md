@@ -6,3 +6,7 @@
 
 - Große Anpassung für Mehrsprachigkeit, besseres App User Handling, Community Übersetzungen möglich gemacht, Template Übersetzungsdatei erstellt, div. sonstige Anpassungen
 
+📦 v0.5.0 – 15.4.2025
+
+- Anpassung UI, FIX für Sprachen in der APP und Fehlerbehebungen
+

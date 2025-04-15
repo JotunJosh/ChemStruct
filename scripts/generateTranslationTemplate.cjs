@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 
 // Quelle: z. B. Deutsch
-const sourcePath = path.join(__dirname, '../src/locales/de/translation.json');
+const sourcePath = path.join(__dirname, '../src/data/locales/de/translation.json');
 // Ziel: Template-Datei
-const templatePath = path.join(__dirname, '../src/locales/template.translation.json');
+const templatePath = path.join(__dirname, '../src/data/locales/template.translation.json');
 
 const raw = fs.readFileSync(sourcePath, 'utf-8');
 const data = JSON.parse(raw);

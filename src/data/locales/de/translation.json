@@ -15,8 +15,10 @@
     "delete": "Löschen",
     "save": "Speichern",
     "add": "Hinzufügen",
-    "turn": "drehen",
+    "turn": "drehen order R drücken",
     "cancel": "Abbrechen",
+    "rows": "Reihen",
+    "columns": "Spalten",
     "datareset": "Daten zurücksetzen!",
     "addObject": "Objekt hinzufügen",
     "addBuilding": "Gebäude hinzufügen",
@@ -74,7 +76,9 @@
         "width": "Breite",
         "height": "Höhe",
         "color": "Farbe",
-        "filter": "Objekte filtern ..."
+        "filter": "Objekte filtern ...",
+        "filterLabel": "Filter (Name oder Beschreibung)",
+        "filterPlaceholder": "z.B. Tisch, Regal, Maschine"
     },
     "updateNotice": {
         "newversionalert": "Neue Version verfügbar!",

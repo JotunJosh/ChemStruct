@@ -1,39 +1,56 @@
-const { ipcMain, dialog, app, BrowserWindow } = require('electron');
+const { ipcMain, dialog, app, BrowserWindow, shell } = require('electron');
 const fs = require('fs');
 const path = require('path');
 const fileManager = require('./fileManager.cjs');
-const { loadLanguageFile } = require('../src/utils/i18n.cjs');
+const { loadLanguageFile } = require('./utils/i18n.cjs');
 const https = require('https');
+const { getAvailableLanguages } = require('./utils/getAvailableLanguages.cjs');
 
 // Aktuelle Sprach Template herunterladen
 ipcMain.handle('download-language-template', async () => {
-  const url = 'https://raw.githubusercontent.com/JotunJosh/chemstruct/main/src/locales/template.translation.json';
-  const targetDir = path.join(app.getPath('userData'), 'i18n', 'community');
+  const url = 'https://raw.githubusercontent.com/JotunJosh/chemstruct/main/src/data/locales/template.translation.json';
+  const targetDir = path.join(app.getPath('userData'), 'i18n', 'template-community');
   const targetPath = path.join(targetDir, 'template.translation.json');
 
   return new Promise((resolve, reject) => {
-    fs.mkdirSync(targetDir, { recursive: true });
+    try {
+      fs.mkdirSync(targetDir, { recursive: true });
+    } catch (mkdirErr) {
+      return reject(new Error(`Ordner konnte nicht erstellt werden: ${mkdirErr.message}`));
+    }
 
-    const file = fs.createWriteStream(targetPath);
     https.get(url, (response) => {
       if (response.statusCode !== 200) {
         return reject(new Error(`HTTP-Fehler: ${response.statusCode}`));
       }
 
+      const file = fs.createWriteStream(targetPath);
       response.pipe(file);
+
       file.on('finish', () => {
-        file.close(() => resolve('template.translation.json'));
+        file.close(() => {
+          shell.showItemInFolder(targetPath); // 🎯 Ordner öffnen
+          resolve('template.translation.json');
+        });
+      });
+
+      file.on('error', (err) => {
+        if (fs.existsSync(targetPath)) {
+          fs.unlink(targetPath, () => reject(err));
+        } else {
+          reject(err);
+        }
       });
     }).on('error', (err) => {
-      fs.unlinkSync(targetPath);
-      reject(err);
+      reject(new Error(`Netzwerkfehler: ${err.message}`));
     });
   });
 });
 
+
 // Community Sprachen verfügbar machen
 ipcMain.handle('get-available-languages', async () => {
-  const basePath = path.join(__dirname, '../src/locales');
+  const basePath = path.join(__dirname, '../src/data/locales');
 
   const official = fs.readdirSync(basePath)
     .filter((dir) => fs.statSync(path.join(basePath, dir)).isDirectory())

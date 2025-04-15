@@ -29,7 +29,6 @@ contextBridge.exposeInMainWorld('api', {
   writeFile: (filePath, content) => ipcRenderer.invoke('writeFile', filePath, content),
   showOpenDialog: (fileType) => ipcRenderer.invoke('showOpenDialog', fileType),
   readFile: (filePath) => ipcRenderer.invoke('readFile', filePath),
-  downloadLanguageTemplate: () => ipcRenderer.invoke('download-language-template'),
 });
 
 contextBridge.exposeInMainWorld("electronAPI", {
@@ -82,6 +81,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getAvailableLanguages: () => ipcRenderer.invoke('get-available-languages'),
   importCommunityTranslation: () => ipcRenderer.invoke('import-community-translation'),
   loadLanguageFile: (langCode) => ipcRenderer.invoke('load-language-file', langCode),
+  downloadLanguageTemplate: () => ipcRenderer.invoke('download-language-template'),
 });
 
 /**

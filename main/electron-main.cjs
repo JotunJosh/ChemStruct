@@ -1,8 +1,8 @@
-const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell, Menu } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const fileManager = require('./fileManager.cjs');
-const { importCommunityLanguage } = require('../src/utils/importCommunityLanguage.cjs');
+const { importCommunityTranslation } = require('./utils/importCommunityLanguage.cjs');
 
 app.whenReady().then(() => {
   const userDataPath = app.getPath('userData');
@@ -21,13 +21,18 @@ require('./ipcHandlers.cjs');
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    width: 1600,
+    height: 1000,
     webPreferences: {
       contextIsolation: true,
+      nodeIntegration: true,
       preload: path.join(__dirname, 'preload.cjs'),
     },
   });
+
+  Menu.setApplicationMenu(null);
+  mainWindow.setMenuBarVisibility(false);
+  mainWindow.removeMenu();
 
   mainWindow.loadURL(`file://${path.join(__dirname, '../dist/index.html')}`);
 }

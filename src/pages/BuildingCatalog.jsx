@@ -243,20 +243,28 @@ export default function BuildingCatalog() {
             <option key={t.key} value={t.key}>{t.label}</option>
           ))}
         </select>
-        <input
-          className={styles.input}
-          type="number"
-          placeholder="Reihen"
-          value={gridSize.rows}
-          onChange={(e) => setGridSize({ ...gridSize, rows: parseInt(e.target.value) })}
-        />
-        <input
-          className={styles.input}
-          type="number"
-          placeholder="Spalten"
-          value={gridSize.cols}
-          onChange={(e) => setGridSize({ ...gridSize, cols: parseInt(e.target.value) })}
-        />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <label style={{ fontSize: '0.8rem', color: '#aaa' }}>
+            {t("rows")}:
+            <input
+              className={styles.input}
+              type="number"
+              value={gridSize.rows}
+              onChange={(e) => setGridSize({ ...gridSize, rows: parseInt(e.target.value) })}
+              style={{ width: '60px', marginLeft: '0.25rem' }}
+            />
+          </label>
+          <label style={{ fontSize: '0.8rem', color: '#aaa' }}>
+            {t("columns")}:
+            <input
+              className={styles.input}
+              type="number"
+              value={gridSize.cols}
+              onChange={(e) => setGridSize({ ...gridSize, cols: parseInt(e.target.value) })}
+              style={{ width: '60px', marginLeft: '0.25rem' }}
+            />
+          </label>
+        </div>
         <button className={styles.button} onClick={handleAddBuilding}>{t("addBuilding")}</button>
         {selectedBuilding && (
           <>

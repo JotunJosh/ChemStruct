@@ -18,6 +18,7 @@ export default function ObjectCatalog() {
   const [selectedObjectIds, setSelectedObjectIds] = useState([]);
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
+  const forceEnglish = localStorage.getItem("forceEnglishObjectNames") === "true";
   const [filterText, setFilterText] = useState("");
 
   useEffect(() => {
@@ -141,6 +142,9 @@ export default function ObjectCatalog() {
   const getLocalizedText = (obj, field) => {
     const value = obj[field];
     if (typeof value === 'object') {
+      if (forceEnglish && field === 'name') {
+        return value['en'] || '???';
+      }
       return value[currentLang] || value['en'] || '???';
     }
     return value;
@@ -157,7 +161,7 @@ export default function ObjectCatalog() {
 
   return (
     <div className={styles.container}>
-      <h2>Objekt-Katalog</h2>
+      <h2>{t("objectCatalog")}</h2>
 
       <div className={styles.toolbar}>
         <button className={styles.button} onClick={() => setExportDialogOpen(true)}>{t("objectsexportdo")}</button>

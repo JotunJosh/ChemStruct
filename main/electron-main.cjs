@@ -30,9 +30,9 @@ function createWindow() {
     },
   });
 
-  Menu.setApplicationMenu(null);
-  mainWindow.setMenuBarVisibility(false);
-  mainWindow.removeMenu();
+  // Menu.setApplicationMenu(null);
+  // mainWindow.setMenuBarVisibility(false);
+  // mainWindow.removeMenu();
 
   mainWindow.loadURL(`file://${path.join(__dirname, '../dist/index.html')}`);
 }

@@ -90,6 +90,15 @@ rl.question("📝 Changelog für dieses Release:\n> ", (changelogText) => {
     console.log("⬇️ Direktlink zur neuen Version:");
     console.log(msiUrl);
 
+      // 🌐 Übersetzungstemplate aktualisieren
+  console.log("🌍 Generiere neues Übersetzungs-Template...");
+  try {
+    execSync("node ./scripts/generateTranslationTemplate.cjs", { stdio: "inherit" });
+    console.log("✅ Übersetzungstemplate erfolgreich generiert.");
+  } catch (err) {
+    console.error("❌ Fehler beim Generieren des Übersetzungs-Templates:", err);
+  }
+
   } catch (err) {
     // ❌ Fehler beim Build oder Upload
     console.error("❌ Build- oder Upload-Fehler:", err);

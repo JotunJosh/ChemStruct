@@ -10,3 +10,7 @@
 
 - Anpassung UI, FIX für Sprachen in der APP und Fehlerbehebungen
 
+📦 v0.6.0 – 17.4.2025
+
+- Anpassung Itemkatalog per Knopf und mittlerer Maustaste, Bessere Übersetztung div. Fehler behoben 
+

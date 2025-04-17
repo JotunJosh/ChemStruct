@@ -41,6 +41,9 @@ useEffect(() => {
     localStorage.setItem("language", language);
   };
 
+  const storedNameMode = localStorage.getItem("forceEnglishObjectNames") === "true";
+  const [forceEnglishObjectNames, setForceEnglishObjectNames] = useState(storedNameMode);
+
   return (
     <div className="settings-container">
       <h1>{t("settings.title")}</h1>
@@ -90,6 +93,23 @@ useEffect(() => {
                 ))}
             </optgroup>
           </select>
+
+          <div className="setting-row">
+                <label htmlFor="nameToggle">{t("settings.forceEnglishNames")}</label>
+                <label className="switch">
+                  <input
+                    id="nameToggle"
+                    type="checkbox"
+                    checked={forceEnglishObjectNames}
+                    onChange={(e) => {
+                      const newValue = e.target.checked;
+                      setForceEnglishObjectNames(newValue);
+                      localStorage.setItem("forceEnglishObjectNames", newValue);
+                    }}
+                  />
+                  <span className="slider round"></span>
+                </label>
+              </div>
 
           <div className="button-row">
     <button onClick={async () => {
@@ -147,7 +167,7 @@ useEffect(() => {
       </button>
 
       {/* 🌙 Darkmode */}
-      <div className="settings-section">
+      {/* <div className="settings-section">
         <div className="setting-row">
           <label htmlFor="darkToggle">{t("settings.darkMode")}</label>
           <label className="switch">
@@ -155,7 +175,7 @@ useEffect(() => {
             <span className="slider round"></span>
           </label>
         </div>
-      </div>
+      </div> */}
 
       {/* 🔗 Externe Links */}
       <div className="settings-section">

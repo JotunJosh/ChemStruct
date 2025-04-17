@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import styles from './LayoutPlanner.module.css';
 import { useTranslation } from "react-i18next";
+import ObjectCatalogPopup from '../components/ObjectCatalogPopup';
 
 export default function LayoutPlanner() {
   const [buildings, setBuildings] = useState([]);
@@ -19,7 +20,67 @@ export default function LayoutPlanner() {
 
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
+  const forceEnglish = localStorage.getItem("forceEnglishObjectNames") === "true";
   const cellSize = 32;
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupCoords, setPopupCoords] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseDown = (e) => {
+      if (e.button === 1) {
+        e.preventDefault();
+  
+        const popupWidth = 400;
+        const popupHeight = 400;
+  
+        const x = Math.min(e.clientX, window.innerWidth - popupWidth - 10);
+        const y = Math.min(e.clientY, window.innerHeight - popupHeight - 10);
+  
+        setPopupCoords({ x, y });
+        setShowPopup(true);
+      }
+    };
+    window.addEventListener('mousedown', handleMouseDown);
+    return () => window.removeEventListener('mousedown', handleMouseDown);
+  }, []);
+
+  const [undoStack, setUndoStack] = useState([]);
+  const [redoStack, setRedoStack] = useState([]);
+  const cloneLayout = (layout) => JSON.parse(JSON.stringify(layout));
+  const replacePlacedObjects = (newList, recordHistory = true) => {
+    const current = layoutStates[currentLayoutKey] || [];
+    if (recordHistory) {
+      setUndoStack(prev => [...prev, cloneLayout(current)]);
+      setRedoStack([]);
+    }
+    setLayoutStates(prev => ({ ...prev, [currentLayoutKey]: newList }));
+  };
+
+  function handleUndo() {
+    const current = layoutStates[currentLayoutKey] || [];
+    if (undoStack.length === 0) return;
+    const previous = undoStack[undoStack.length - 1];
+    setUndoStack(prev => prev.slice(0, -1));
+    setRedoStack(prev => [...prev, cloneLayout(current)]);
+    replacePlacedObjects(previous, false);
+  }
+
+  function handleRedo() {
+    const current = layoutStates[currentLayoutKey] || [];
+    if (redoStack.length === 0) return;
+    const next = redoStack[redoStack.length - 1];
+    setRedoStack(prev => prev.slice(0, -1));
+    setUndoStack(prev => [...prev, cloneLayout(current)]);
+    replacePlacedObjects(next, false);
+  }
+
+  function handleResetLayout() {
+    const confirmReset = window.confirm(`❗ ${t("resetmsg")}`);
+    if (!confirmReset) return;
+  
+    replacePlacedObjects([], true); // leeres Layout, neue Undo-Stufe
+  }
 
   useEffect(() => {
     window.api.readJsonFile('buildings.json').then(setBuildings).catch(console.error);
@@ -43,17 +104,19 @@ export default function LayoutPlanner() {
   const grid = floor?.grid;
   const currentLayoutKey = building ? getLayoutKey(building.id, currentFloor) : '';
   const placedObjects = layoutStates[currentLayoutKey] || [];
-  const setPlacedObjects = (newList) => {
-    setLayoutStates(prev => ({ ...prev, [currentLayoutKey]: newList }));
-  };
+  
 
   const getLocalizedText = (obj, field) => {
     const value = obj[field];
     if (typeof value === 'object') {
+      if (forceEnglish && field === 'name') {
+        return value['en'] || '???';
+      }
       return value[currentLang] || value['en'] || '???';
     }
     return value;
   };
+  
 
   const sortedObjects = [...objects].sort((a, b) =>
     getLocalizedText(a, "name").localeCompare(getLocalizedText(b, "name"))
@@ -74,7 +137,7 @@ export default function LayoutPlanner() {
       buildingId: building.id,
       floorIndex: currentFloor
     };
-    setPlacedObjects([...placedObjects, newObj]);
+    replacePlacedObjects([...placedObjects, newObj]);
   };
 
   const isOccupied = (r, c) => placedObjects.some(o => {
@@ -214,11 +277,18 @@ export default function LayoutPlanner() {
 
       {/* Toolbar: Reihe 3 */}
       <div className={styles.toolbar}>
-        <select className={styles.input} value={selectedObjectId ?? ''} onChange={e => setSelectedObjectId(e.target.value || null)}>
-          <option value="">{t("objectselect")}</option>
-          {sortedObjects.map(obj => <option key={obj.id} value={obj.id}>{getLocalizedText(obj, "name")} ({obj.width}×{obj.height})</option>)}
-        </select>
+
+      <button onClick={() => {
+          setPopupCoords({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 200 });
+          setShowPopup(true);
+        }}>📦 {t("openCatalog")}</button>
+        
         <button onClick={() => setRotation((prev) => (prev + 90) % 360)}>🔄 {t("turn")}</button>
+
+        <button onClick={handleUndo} disabled={undoStack.length === 0}>⬅️ {t("undo")}</button>
+        <button onClick={handleRedo} disabled={redoStack.length === 0}>➡️ {t("redo")}</button>
+        <button onClick={handleResetLayout}>🧹 {t("reset")}</button>
+
       </div>
 
       {/* Grid + Vorschau */}
@@ -234,7 +304,7 @@ export default function LayoutPlanner() {
                 onContextMenu={(e) => {
                   e.preventDefault();
                   const obj = getObjectAt(rIdx, cIdx);
-                  if (obj) setPlacedObjects(placedObjects.filter(o => o !== obj));
+                  if (obj) replacePlacedObjects(placedObjects.filter(o => o !== obj));
                 }}
                 onMouseEnter={() => setHoverCell({ row: rIdx, col: cIdx })}
                 onMouseLeave={() => setHoverCell(null)}
@@ -267,6 +337,19 @@ export default function LayoutPlanner() {
           )}
         </div>
       </div>
+      
+      {showPopup && (
+    <ObjectCatalogPopup
+      x={popupCoords.x}
+      y={popupCoords.y}
+      objects={objects}
+      onSelect={(id) => {
+        setSelectedObjectId(id);
+        setShowPopup(false);
+      }}
+      onClose={() => setShowPopup(false)}
+    />
+  )}
     </div>
   );
 }

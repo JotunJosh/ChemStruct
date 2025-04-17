@@ -1,5 +1,8 @@
 import React from 'react';
 import { ipcRenderer } from 'electron';
+import { useTranslation } from 'react-i18next';
+
+const { t } = useTranslation();
 
 const ImportTranslationButton = ({ onImport }) => {
   const handleClick = async () => {
@@ -7,17 +10,17 @@ const ImportTranslationButton = ({ onImport }) => {
       const filename = await ipcRenderer.invoke('import-community-translation');
       if (filename && onImport) {
         onImport(filename); // z. B. Liste neu laden
-        alert(`Import erfolgreich: ${filename}`);
+        alert(`${t("importLanguageDone")} ${filename}`);
       }
     } catch (err) {
       console.error(err);
-      alert('Import fehlgeschlagen.');
+      alert(`❌ ${t("importLanguageError")}`);
     }
   };
 
   return (
     <button onClick={handleClick}>
-      ➕ Community-Übersetzung importieren
+      ➕ {t("importLanguage")}
     </button>
   );
 };

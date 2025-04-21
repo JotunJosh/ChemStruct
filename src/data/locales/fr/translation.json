@@ -69,6 +69,7 @@
     "resetalert": "⚠️ Êtes-vous sûr ? Tous les plans et objets seront écrasés !",
     "resetdone": "✅ Réinitialisation réussie ! Veuillez redémarrer l’application ou recharger la page.",
     "forceEnglishNames": "Toujours afficher les noms d’objets en anglais ?",
+    "catalogAutoClose": "Fermer automatiquement le catalogue d'objets",
     "links": {
       "title": "Liens externes"
     },
@@ -96,5 +97,16 @@
     "later": "plus tard",
     "download_github": "Télécharger depuis GitHub",
     "download_nexus": "Télécharger depuis NexusMods"
+  },
+  "cell": {
+    "floor": "Sol",
+    "empty": "Vide",
+    "wall": "Mur",
+    "blocked": "Bloqué",
+    "water": "Eau",
+    "entrance": "Entrée",
+    "stairsUp": "Escaliers ↑",
+    "stairsDown": "Escaliers ↓",
+    "marker": "Marqueur"
   }
 }

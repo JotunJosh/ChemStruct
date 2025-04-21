@@ -13,13 +13,13 @@ function UpdateNotice({ version, url, onClose }) {
         <h2>🔔 {t("updateNotice.newversionalert")}</h2>
         <p>{t("updateNotice.versioninfo1")} <strong>{version}</strong> {t("updateNotice.versioninfo2")}</p>
         <div className="update-actions update-buttons">
-              <button onClick={() => window.electronAPI.openExternalLink("https://github.com/JotunJosh/ChemStruct/releases")}>
-                {t("updateNotice.download_github")}
-              </button>
-              <button onClick={() => window.electronAPI.openExternalLink("https://www.nexusmods.com/schedule1/mods/522")}>
-                {t("updateNotice.download_nexus")}
-              </button>
-            </div>
+          <button onClick={() => window.api.openExternalLink("https://github.com/JotunJosh/ChemStruct/releases")}>
+            {t("updateNotice.download_github")}
+          </button>
+          <button onClick={() => window.api.openExternalLink("https://www.nexusmods.com/schedule1/mods/522")}>
+            {t("updateNotice.download_nexus")}
+          </button>
+        </div>
         <div className="update-dismiss">
           <button onClick={onClose}>{t("updateNotice.later")}</button>
         </div>

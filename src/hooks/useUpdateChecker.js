@@ -8,7 +8,7 @@ export function useUpdateChecker() {
   useEffect(() => {
     async function check() {
       try {
-        const currentVersion = await window.electronAPI.getAppVersion();
+        const currentVersion = await window.api.getAppVersion();
         const response = await fetch("https://api.github.com/repos/JotunJosh/chemstruct/releases/latest"); // richtige URL
         // const response = await fetch("https://api.github.com/repos/JotunJosh/huntmate/releases/latest"); // Debug zum Testen
         const data = await response.json();

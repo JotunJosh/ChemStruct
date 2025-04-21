@@ -151,13 +151,13 @@ export default function ObjectCatalog() {
   };
 
   const filteredObjects = [...objects]
-  .filter((obj) => {
-    const name = getLocalizedText(obj, "name").toLowerCase();
-    const description = getLocalizedText(obj, "description")?.toLowerCase() || "";
-    const filter = filterText.toLowerCase();
-    return name.includes(filter) || description.includes(filter);
-  })
-  .sort((a, b) => getLocalizedText(a, "name").localeCompare(getLocalizedText(b, "name")));
+    .filter((obj) => {
+      const name = getLocalizedText(obj, "name").toLowerCase();
+      const description = getLocalizedText(obj, "description")?.toLowerCase() || "";
+      const filter = filterText.toLowerCase();
+      return name.includes(filter) || description.includes(filter);
+    })
+    .sort((a, b) => getLocalizedText(a, "name").localeCompare(getLocalizedText(b, "name")));
 
   return (
     <div className={styles.container}>
@@ -256,39 +256,39 @@ export default function ObjectCatalog() {
             {t("cancel")}
           </button>
         )}
-     </form>
+      </form>
       <form onSubmit={handleSubmit} className={styles.form}>
-              <div style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '400px', marginBottom: '1rem' }}>
-            <label style={{ fontSize: '0.9rem', color: '#aaa', marginBottom: '0.25rem' }}>
-              🔍 {t("objectForm.filterLabel") || "Objekte filtern (Name oder Beschreibung)"}
-            </label>
-            <input
-              type="text"
-              placeholder={t("objectForm.filterPlaceholder") || "z. B. 'Table' oder 'Speicher'"}
-              value={filterText}
-              onChange={(e) => setFilterText(e.target.value)}
-              className={styles.input}
-              style={{ height: '2.5rem', fontSize: '1rem' }}
-            />
-          </div>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '400px', marginBottom: '1rem' }}>
+          <label style={{ fontSize: '0.9rem', color: '#aaa', marginBottom: '0.25rem' }}>
+            🔍 {t("objectForm.filterLabel") || "Objekte filtern (Name oder Beschreibung)"}
+          </label>
+          <input
+            type="text"
+            placeholder={t("objectForm.filterPlaceholder") || "z. B. 'Table' oder 'Speicher'"}
+            value={filterText}
+            onChange={(e) => setFilterText(e.target.value)}
+            className={styles.input}
+            style={{ height: '2.5rem', fontSize: '1rem' }}
+          />
+        </div>
       </form>
 
-              <ul className={styles.objectList}>
-          {filteredObjects.map((obj) => (
-            <li key={obj.id} className={styles.objectItem}>
-              <div>
-                <strong>{getLocalizedText(obj, "name")}</strong> ({obj.width}x{obj.height}) –
-                <span className={styles.objectColor} style={{ backgroundColor: obj.color }}>{obj.color}</span>
-                <br />
-                <em>{getLocalizedText(obj, "description")}</em>
-              </div>
-              <div>
-                <button className={styles.button} onClick={() => handleEdit(obj)}>{t("edit")}</button>
-                <button className={styles.button} onClick={() => handleDelete(obj.id)}>{t("delete")}</button>
-              </div>
-            </li>
-          ))}
-          </ul>
+      <ul className={styles.objectList}>
+        {filteredObjects.map((obj) => (
+          <li key={obj.id} className={styles.objectItem}>
+            <div>
+              <strong>{getLocalizedText(obj, "name")}</strong> ({obj.width}x{obj.height}) –
+              <span className={styles.objectColor} style={{ backgroundColor: obj.color }}>{obj.color}</span>
+              <br />
+              <em>{getLocalizedText(obj, "description")}</em>
+            </div>
+            <div>
+              <button className={styles.button} onClick={() => handleEdit(obj)}>{t("edit")}</button>
+              <button className={styles.button} onClick={() => handleDelete(obj.id)}>{t("delete")}</button>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

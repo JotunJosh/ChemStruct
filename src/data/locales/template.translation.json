@@ -69,6 +69,7 @@
     "resetalert": "",
     "resetdone": "",
     "forceEnglishNames": "",
+    "catalogAutoClose": "",
     "links": {
       "title": ""
     },
@@ -96,5 +97,16 @@
     "later": "",
     "download_github": "",
     "download_nexus": ""
+  },
+  "cell": {
+    "floor": "",
+    "empty": "",
+    "wall": "",
+    "blocked": "",
+    "water": "",
+    "entrance": "",
+    "stairsUp": "",
+    "stairsDown": "",
+    "marker": ""
   }
 }

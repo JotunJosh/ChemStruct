@@ -146,6 +146,9 @@ ipcMain.handle('readFile', (event, filepath) => {
 
 // Dateien direkt schreiben (Export)
 ipcMain.handle('writeFile', (event, { path, content }) => {
+  if (typeof path !== 'string' || typeof content !== 'string') {
+    throw new Error("Invalid arguments for writeFile");
+  }
   fs.writeFileSync(path, content, 'utf-8');
 });
 
@@ -199,7 +202,7 @@ ipcMain.handle('writeJsonFile', async (event, relativePath, data) => {
 });
 
 // Beliebige JSON-Datei aus userData lesen
-ipcMain.handle('readJsonFile', async (event, relativePath) => {
+ipcMain.handle('readJsonFile', async (event, { path: relativePath }) => {
   const userDataPath = app.getPath('userData');
   const targetPath = path.join(userDataPath, relativePath);
 

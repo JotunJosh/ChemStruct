@@ -26,17 +26,28 @@ export default function LayoutPlanner() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupCoords, setPopupCoords] = useState({ x: 0, y: 0 });
 
+  const [catalogAutoClose, setCatalogAutoClose] = useState(() => {
+    // Default: true, es sei denn, es steht explizit "false" im Storage
+    return localStorage.getItem("catalogAutoClose") !== "false";
+  });
+
+  const toggleCatalogBehavior = () => {
+    const newValue = !catalogAutoClose;
+    setCatalogAutoClose(newValue);
+    localStorage.setItem("catalogAutoClose", newValue);
+  };
+
   useEffect(() => {
     const handleMouseDown = (e) => {
       if (e.button === 1) {
         e.preventDefault();
-  
+
         const popupWidth = 400;
         const popupHeight = 400;
-  
+
         const x = Math.min(e.clientX, window.innerWidth - popupWidth - 10);
         const y = Math.min(e.clientY, window.innerHeight - popupHeight - 10);
-  
+
         setPopupCoords({ x, y });
         setShowPopup(true);
       }
@@ -78,7 +89,7 @@ export default function LayoutPlanner() {
   function handleResetLayout() {
     const confirmReset = window.confirm(`❗ ${t("resetmsg")}`);
     if (!confirmReset) return;
-  
+
     replacePlacedObjects([], true); // leeres Layout, neue Undo-Stufe
   }
 
@@ -87,6 +98,36 @@ export default function LayoutPlanner() {
     window.api.readJsonFile('objects.json').then(setObjects).catch(console.error);
     window.api.listLayouts().then(setSavedLayouts).catch(console.error);
   }, []);
+
+  // Wiederherstellung prüfen
+  useEffect(() => {
+    const saved = localStorage.getItem('chemstruct_autosave');
+    if (!saved) return;
+
+    try {
+      const parsed = JSON.parse(saved);
+      setLayoutStates(parsed.layoutStates || {});
+      setSelectedBuildingIndex(parsed.selectedBuildingIndex || 0);
+      setCurrentFloor(parsed.currentFloor || 0);
+      setLayoutName(parsed.layoutName || '');
+    } catch (err) {
+      console.error("❌ Fehler beim automatischen Wiederherstellen:", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      const autosaveData = {
+        layoutStates,
+        selectedBuildingIndex,
+        currentFloor,
+        layoutName
+      };
+      localStorage.setItem('chemstruct_autosave', JSON.stringify(autosaveData));
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [layoutStates, selectedBuildingIndex, currentFloor, layoutName]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -98,13 +139,25 @@ export default function LayoutPlanner() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedObjectId]);
 
+  // Autosave bei Änderungen
+  useEffect(() => {
+    if (!building) return;
+    const autosaveData = {
+      layoutStates,
+      selectedBuildingIndex,
+      currentFloor,
+      layoutName
+    };
+    localStorage.setItem('chemstruct_autosave', JSON.stringify(autosaveData));
+  }, [layoutStates, selectedBuildingIndex, currentFloor, layoutName]);
+
   const getLayoutKey = (buildingId, floorIndex) => `${buildingId}-${floorIndex}`;
   const building = buildings[selectedBuildingIndex];
   const floor = building?.floors?.[currentFloor];
   const grid = floor?.grid;
   const currentLayoutKey = building ? getLayoutKey(building.id, currentFloor) : '';
   const placedObjects = layoutStates[currentLayoutKey] || [];
-  
+
 
   const getLocalizedText = (obj, field) => {
     const value = obj[field];
@@ -116,7 +169,7 @@ export default function LayoutPlanner() {
     }
     return value;
   };
-  
+
 
   const sortedObjects = [...objects].sort((a, b) =>
     getLocalizedText(a, "name").localeCompare(getLocalizedText(b, "name"))
@@ -192,6 +245,7 @@ export default function LayoutPlanner() {
       floorIndex: currentFloor,
       objects: placedObjects
     };
+
     const filePath = await window.api.showSaveDialog(`layout_${building.name}.json`);
     if (filePath) {
       await window.api.writeFile(filePath, JSON.stringify(layoutData, null, 2));
@@ -255,13 +309,13 @@ export default function LayoutPlanner() {
 
       {/* Toolbar: Reihe 2 */}
       <div className={styles.toolbar}>
-      <input
-            type="text"
-            placeholder={t("layoutname")}
-            value={layoutName}
-            onChange={e => setLayoutName(e.target.value)}
-            className={styles.input}
-          />
+        <input
+          type="text"
+          placeholder={t("layoutname")}
+          value={layoutName}
+          onChange={e => setLayoutName(e.target.value)}
+          className={styles.input}
+        />
         <button onClick={handleStoreLayout}>💾 {t("layoutSave")}</button>
         <select className={styles.input} value={selectedSavedLayout} onChange={(e) => {
           const name = e.target.value;
@@ -278,11 +332,11 @@ export default function LayoutPlanner() {
       {/* Toolbar: Reihe 3 */}
       <div className={styles.toolbar}>
 
-      <button onClick={() => {
+        <button onClick={() => {
           setPopupCoords({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 200 });
           setShowPopup(true);
         }}>📦 {t("openCatalog")}</button>
-        
+
         <button onClick={() => setRotation((prev) => (prev + 90) % 360)}>🔄 {t("turn")}</button>
 
         <button onClick={handleUndo} disabled={undoStack.length === 0}>⬅️ {t("undo")}</button>
@@ -316,19 +370,19 @@ export default function LayoutPlanner() {
         <div className={styles.objectLayer}>
           {placedObjects.map((obj, i) => (
             <div
-            key={`obj-${i}`}
-            className={styles.objectBlock}
-            style={{
-              top: obj.pos.row * cellSize,
-              left: obj.pos.col * cellSize,
-              width: obj.width * cellSize,
-              height: obj.height * cellSize,
-              backgroundColor: obj.color
-            }}
-            title={getLocalizedText(obj, 'name')}
-          >
-            <span className={styles.objectLabel}>{getLocalizedText(obj, 'name')}</span>
-          </div>
+              key={`obj-${i}`}
+              className={styles.objectBlock}
+              style={{
+                top: obj.pos.row * cellSize,
+                left: obj.pos.col * cellSize,
+                width: obj.width * cellSize,
+                height: obj.height * cellSize,
+                backgroundColor: obj.color
+              }}
+              title={getLocalizedText(obj, 'name')}
+            >
+              <span className={styles.objectLabel}>{getLocalizedText(obj, 'name')}</span>
+            </div>
           ))}
           {hoverCell && selectedObject && canPlaceObject(hoverCell.row, hoverCell.col, selectedObject) && (
             <div className={`${styles.objectBlock} ${styles.previewObject}`} style={{ top: hoverCell.row * cellSize, left: hoverCell.col * cellSize, width: selectedObject.width * cellSize, height: selectedObject.height * cellSize, backgroundColor: selectedObject.color }}>
@@ -337,19 +391,22 @@ export default function LayoutPlanner() {
           )}
         </div>
       </div>
-      
+
       {showPopup && (
-    <ObjectCatalogPopup
-      x={popupCoords.x}
-      y={popupCoords.y}
-      objects={objects}
-      onSelect={(id) => {
-        setSelectedObjectId(id);
-        setShowPopup(false);
-      }}
-      onClose={() => setShowPopup(false)}
-    />
-  )}
+        <ObjectCatalogPopup
+          x={popupCoords.x}
+          y={popupCoords.y}
+          objects={objects}
+          onSelect={(id) => {
+            setSelectedObjectId(id);
+            if (catalogAutoClose) setShowPopup(false);
+          }}
+          onClose={() => {
+            if (catalogAutoClose) setShowPopup(false);
+          }}
+          stayOpen={!catalogAutoClose}
+        />
+      )}
     </div>
   );
 }

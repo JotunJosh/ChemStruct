@@ -69,6 +69,7 @@
     "resetalert": "⚠️ Are you sure? All layouts & objects will be overwritten!",
     "resetdone": "✅ Reset complete! Please restart the app or reload the page.",
     "forceEnglishNames": "Always display object names in English?",
+    "catalogAutoClose": "Automatically close object catalog",
     "links": {
       "title": "External Links"
     },
@@ -96,5 +97,16 @@
     "later": "later",
     "download_github": "Download from GitHub",
     "download_nexus": "Download from NexusMods"
+  },
+  "cell": {
+    "floor": "Floor",
+    "empty": "Empty",
+    "wall": "Wall",
+    "blocked": "Blocked",
+    "water": "Water",
+    "entrance": "Entrance",
+    "stairsUp": "Stairs ↑",
+    "stairsDown": "Stairs ↓",
+    "marker": "Marker"
   }
 }

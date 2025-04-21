@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './ObjectCatalogPopup.module.css';
 import { useTranslation } from 'react-i18next';
 
-export default function ObjectCatalogPopup({ x, y, objects, onSelect, onClose }) {
+export default function ObjectCatalogPopup({ x, y, objects, onSelect, onClose, stayOpen }) {
   const [searchTerm, setSearchTerm] = useState('');
   const { i18n } = useTranslation(); // ✅ muss HIER stehen, innerhalb der Funktion
   const currentLang = i18n.language;
@@ -27,7 +27,9 @@ export default function ObjectCatalogPopup({ x, y, objects, onSelect, onClose })
     <div
       className={styles.popup}
       style={{ top: y, left: x }}
-      onMouseLeave={onClose}
+      onMouseLeave={() => {
+        if (!stayOpen) onClose();
+      }}
     >
       <input
         className={styles.search}

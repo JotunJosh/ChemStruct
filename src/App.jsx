@@ -40,7 +40,7 @@ export default function App() {
 
       let currentVersion = null;
       try {
-        currentVersion = await window.electronAPI?.getAppVersion?.();
+        currentVersion = await window.api?.getAppVersion?.();
         console.log("📦 App-Version:", currentVersion);
         setAppVersion(currentVersion || "dev");
       } catch (err) {
@@ -79,7 +79,7 @@ export default function App() {
     console.log("🌊 SplashScreen wird gerendert!");
     return <SplashScreen />;
   }
-  
+
   // 🧩 Haupt-App
   return (
     <div className="app-container">
@@ -104,8 +104,8 @@ export default function App() {
           version={latestVersion}
           url={releaseUrl}
           onClose={() => setHideModal(true)}
-          />
-        )}
+        />
+      )}
 
       <footer
         style={{

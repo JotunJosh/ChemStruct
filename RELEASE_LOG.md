@@ -14,3 +14,7 @@
 
 - Anpassung Itemkatalog per Knopf und mittlerer Maustaste, Bessere Übersetztung div. Fehler behoben 
 
+📦 v0.6.1 – 21.4.2025
+
+- QoL Besserer Popup Katalog, mit einstellungen - Anpassung api - Anpassung Im und Export Funktion - Fix fuer SweatShop
+

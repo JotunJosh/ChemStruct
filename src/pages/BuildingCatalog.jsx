@@ -2,16 +2,16 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import styles from './BuildingCatalog.module.css';
 
-const CELL_TYPES = [
-  { key: 'floor', label: 'Boden', color: '#3c593c' },
-  { key: 'empty', label: 'Leer', color: '#222' },
-  { key: 'wall', label: 'Wand', color: '#555' },
-  { key: 'blocked', label: 'Blockiert', color: '#a33' },
-  { key: 'water', label: 'Wasser', color: '#3399cc' },
-  { key: 'entrance', label: 'Eingang', color: '#ffaa00' },
-  { key: 'stairs-up', label: 'Treppe ↑', color: '#8bc34a' },
-  { key: 'stairs-down', label: 'Treppe ↓', color: '#c2185b' },
-  { key: 'marker', label: 'Marker', color: '#999' }
+const CELL_TYPES_BASE = [
+  { key: 'floor', labelKey: 'cell.floor', color: '#3c593c' },
+  { key: 'empty', labelKey: 'cell.empty', color: '#222' },
+  { key: 'wall', labelKey: 'cell.wall', color: '#555' },
+  { key: 'blocked', labelKey: 'cell.blocked', color: '#a33' },
+  { key: 'water', labelKey: 'cell.water', color: '#3399cc' },
+  { key: 'entrance', labelKey: 'cell.entrance', color: '#ffaa00' },
+  { key: 'stairs-up', labelKey: 'cell.stairsUp', color: '#8bc34a' },
+  { key: 'stairs-down', labelKey: 'cell.stairsDown', color: '#c2185b' },
+  { key: 'marker', labelKey: 'cell.marker', color: '#999' }
 ];
 
 export default function BuildingCatalog() {
@@ -27,6 +27,10 @@ export default function BuildingCatalog() {
   const [selectedExports, setSelectedExports] = useState([]);
 
   const { t } = useTranslation();
+  const CELL_TYPES = CELL_TYPES_BASE.map(cell => ({
+    ...cell,
+    label: t(cell.labelKey)
+  }));
 
   useEffect(() => {
     window.api.readJsonFile('buildings.json')
@@ -134,9 +138,9 @@ export default function BuildingCatalog() {
     if (!selectedExports.length) return;
     const dataToExport = buildings.filter(b => selectedExports.includes(b.id));
     const blob = JSON.stringify(dataToExport, null, 2);
-    const filePath = await window.electronAPI.showSaveDialog("schedule1_buildings_export.json");
+    const filePath = await window.api.showSaveDialog("schedule1_buildings_export.json");
     if (filePath) {
-      await window.electronAPI.writeFile(filePath, blob);
+      await window.API.writeFile(filePath, blob);
       setExportDialogOpen(false);
       setSelectedExports([]);
       alert("✅ Gebäude exportiert!");
@@ -334,9 +338,9 @@ export default function BuildingCatalog() {
                   title={cell.type === 'marker' && cell.label ? cell.label : cell.type}
                 >
                   {markerEdit &&
-                  markerEdit.floorIndex === fIdx &&
-                  markerEdit.rowIndex === rIdx &&
-                  markerEdit.colIndex === cIdx ? (
+                    markerEdit.floorIndex === fIdx &&
+                    markerEdit.rowIndex === rIdx &&
+                    markerEdit.colIndex === cIdx ? (
                     <input
                       autoFocus
                       value={cell.label}

@@ -1,6 +1,6 @@
 {
   "name": "chemstruct",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "ChemStruct – Der Layout-Planer für Schedule 1",
   "author": "JotunJosh",
   "type": "module",
@@ -18,6 +18,7 @@
     "release": "node scripts/release.cjs"
   },
   "dependencies": {
+    "electron-is-dev": "^3.0.1",
     "i18next": "^24.2.3",
     "i18next-browser-languagedetector": "^8.0.4",
     "i18next-fs-backend": "^2.6.0",

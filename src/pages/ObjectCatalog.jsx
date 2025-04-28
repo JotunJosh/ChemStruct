@@ -1,70 +1,49 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import styles from './ObjectCatalog.module.css';
 
 export default function ObjectCatalog() {
-  const [objects, setObjects] = useState([]);
-  const [form, setForm] = useState({
-    id: '',
-    name: {},
-    description: {},
-    width: 1,
-    height: 1,
-    color: '#cccccc'
-  });
-  const [editMode, setEditMode] = useState(false);
-
-  const [exportDialogOpen, setExportDialogOpen] = useState(false);
-  const [selectedObjectIds, setSelectedObjectIds] = useState([]);
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
   const forceEnglish = localStorage.getItem("forceEnglishObjectNames") === "true";
+
+  const [objects, setObjects] = useState([]);
+  const [form, setForm] = useState({ id: '', name: {}, description: {}, width: 1, height: 1, color: '#cccccc' });
+  const [editMode, setEditMode] = useState(false);
+  const [exportDialogOpen, setExportDialogOpen] = useState(false);
+  const [selectedObjectIds, setSelectedObjectIds] = useState([]);
   const [filterText, setFilterText] = useState("");
 
   useEffect(() => {
-    window.api.readJsonFile('objects.json')
-      .then(setObjects)
-      .catch(console.error);
+    window.api.readJsonFile('objects.json').then(setObjects).catch(console.error);
   }, []);
-
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'width' || name === 'height') {
-      setForm({ ...form, [name]: parseInt(value) });
+      setForm({ ...form, [name]: value === '' ? '' : parseInt(value) });
     } else if (name === 'name' || name === 'description') {
       setForm({
         ...form,
-        [name]: {
-          ...form[name],
-          [currentLang]: value
-        }
+        [name]: { ...form[name], [currentLang]: value }
       });
     } else {
       setForm({ ...form, [name]: value });
     }
   };
 
-  const resetForm = () => {
-    setForm({
-      id: '',
-      name: {},
-      description: {},
-      width: 1,
-      height: 1,
-      color: '#cccccc'
-    });
-    setEditMode(false);
-  };
-
-  const saveToFile = async (data) => {
+  const saveToFile = async (data, customPath = 'objects.json') => {
     try {
-      await window.api.writeJsonFile('objects.json', data);
+      await window.api.writeJsonFile(customPath, data);
       console.log("💾 Datei gespeichert!");
     } catch (err) {
       console.error("❌ Fehler beim Speichern:", err);
     }
+  };
+
+  const resetForm = () => {
+    setForm({ id: '', name: {}, description: {}, width: 1, height: 1, color: '#cccccc' });
+    setEditMode(false);
   };
 
   const handleSubmit = async (e) => {
@@ -73,10 +52,7 @@ export default function ObjectCatalog() {
     if (editMode) {
       updatedList = objects.map((o) => (o.id === form.id ? form : o));
     } else {
-      const newObj = {
-        ...form,
-        id: 'obj_' + Date.now()
-      };
+      const newObj = { ...form, id: 'obj_' + Date.now() };
       updatedList = [...objects, newObj];
     }
     setObjects(updatedList);
@@ -85,7 +61,11 @@ export default function ObjectCatalog() {
   };
 
   const handleEdit = (obj) => {
-    setForm(obj);
+    setForm({
+      ...obj,
+      width: obj.width ?? 1,
+      height: obj.height ?? 1
+    });
     setEditMode(true);
   };
 
@@ -98,10 +78,9 @@ export default function ObjectCatalog() {
 
   const handleExportObjects = async () => {
     const dataToExport = objects.filter(obj => selectedObjectIds.includes(obj.id));
-    const blob = JSON.stringify(dataToExport, null, 2);
     const filePath = await window.api.showSaveDialog("schedule1_objects_export.json");
     if (filePath) {
-      await window.api.writeFile(filePath, blob);
+      await saveToFile(dataToExport, filePath);
       setExportDialogOpen(false);
       setSelectedObjectIds([]);
       alert("✅ Objekte exportiert!");
@@ -119,7 +98,6 @@ export default function ObjectCatalog() {
         alert("❌ Ungültiges Format – erwartet wurde ein Array.");
         return;
       }
-
       const merged = [...objects];
       for (const newObj of imported) {
         const index = merged.findIndex(o => o.id === newObj.id);
@@ -129,7 +107,6 @@ export default function ObjectCatalog() {
           merged.push(newObj);
         }
       }
-
       setObjects(merged);
       await saveToFile(merged);
       alert("✅ Objekte importiert!");
@@ -142,9 +119,7 @@ export default function ObjectCatalog() {
   const getLocalizedText = (obj, field) => {
     const value = obj[field];
     if (typeof value === 'object') {
-      if (forceEnglish && field === 'name') {
-        return value['en'] || '???';
-      }
+      if (forceEnglish && field === 'name') return value['en'] || '???';
       return value[currentLang] || value['en'] || '???';
     }
     return value;
@@ -220,7 +195,7 @@ export default function ObjectCatalog() {
               type="number"
               name="width"
               min="1"
-              value={form.width}
+              value={form.width === '' ? '' : form.width}
               onChange={handleChange}
               required
               className={styles.input}
@@ -233,7 +208,7 @@ export default function ObjectCatalog() {
               type="number"
               name="height"
               min="1"
-              value={form.height}
+              value={form.height === '' ? '' : form.height}
               onChange={handleChange}
               required
               className={styles.input}

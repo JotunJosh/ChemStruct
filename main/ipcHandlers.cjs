@@ -186,12 +186,31 @@ ipcMain.handle('resetJsonFile', (event, filename) => {
   return true;
 });
 
-ipcMain.handle('writeJsonFile', async (event, relativePath, data) => {
-  const userDataPath = app.getPath('userData');
-  const targetPath = path.join(userDataPath, relativePath);
+// Kopieren von Benutzer-AppData zurück nach /data (nur Dev)
+ipcMain.handle('copyUserDataToOriginal', (event, filename) => {
+  if (process.env.NODE_ENV !== 'development') {
+    throw new Error('Nur im Entwicklungsmodus erlaubt.');
+  }
 
+  const userDataPath = path.join(app.getPath('userData'), filename);
+  const targetPath = path.join(__dirname, '..', 'data', filename);
+
+  if (!fs.existsSync(userDataPath)) {
+    throw new Error(`Benutzerdaten-Datei nicht gefunden: ${userDataPath}`);
+  }
+
+  fs.copyFileSync(userDataPath, targetPath);
+  return true;
+});
+
+
+ipcMain.handle('writeJsonFile', async (event, relativeOrAbsolutePath, data) => {
   try {
-    // sicherstellen, dass der Ordner existiert
+    const isAbsolute = path.isAbsolute(relativeOrAbsolutePath);
+    const targetPath = isAbsolute
+      ? relativeOrAbsolutePath
+      : path.join(app.getPath('userData'), relativeOrAbsolutePath);
+
     fs.mkdirSync(path.dirname(targetPath), { recursive: true });
     fs.writeFileSync(targetPath, JSON.stringify(data, null, 2), 'utf-8');
     return true;

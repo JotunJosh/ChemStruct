@@ -13,6 +13,8 @@ const SettingsPage = () => {
   const { api } = window;
   const [availableLanguages, setAvailableLanguages] = useState([]);
 
+  const isDev = window.appInfo?.isDev;
+
   useEffect(() => {
     api.getAvailableLanguages().then((langs) => {
       setAvailableLanguages(langs);
@@ -170,23 +172,39 @@ const SettingsPage = () => {
         </div>
       </div>
 
+      {/* ➡️ Daten aus App in Benutzer-AppData kopieren */}
       <button
         onClick={async () => {
-          const confirm = window.confirm(t("settings.resetalert"));
-          if (!confirm) return;
-
           try {
-            await window.api.resetJsonFile('objects.json');
-            await window.api.resetJsonFile('buildings.json');
-            alert(t("settings.resetdone"));
+            await window.api.copyOriginalToUserData('objects.json');
+            await window.api.copyOriginalToUserData('buildings.json');
+            alert('✅ Daten erfolgreich in Benutzerordner kopiert!');
           } catch (err) {
-            console.error("❌ Fehler beim Zurücksetzen:", err);
-            alert("❌ Fehler beim Zurücksetzen – siehe Konsole.");
+            console.error("❌ Fehler beim Kopieren:", err);
+            alert('❌ Fehler beim Kopieren – siehe Konsole.');
           }
         }}
       >
-        🔄 {t("datareset")}
+        📂 {t("datareset")}
       </button>
+
+      {/* ⬅️ Benutzer-AppData zurück in App (nur Dev) */}
+      {isDev && (
+        <button
+          onClick={async () => {
+            try {
+              await window.api.copyUserDataToOriginal('objects.json');
+              await window.api.copyUserDataToOriginal('buildings.json');
+              alert('✅ Benutzerdaten erfolgreich ins Projekt kopiert!');
+            } catch (err) {
+              console.error("❌ Fehler beim Zurückkopieren:", err);
+              alert('❌ Fehler beim Zurückkopieren – siehe Konsole.');
+            }
+          }}
+        >
+          🛠️ {t("dataresetDEV")}
+        </button>
+      )}
 
       {/* 🌙 Darkmode */}
       {/* <div className="settings-section">

@@ -31,9 +31,10 @@ function createWindow() {
     },
   });
 
-  // Menu.setApplicationMenu(null);
-  // mainWindow.setMenuBarVisibility(false);
-  // mainWindow.removeMenu();
+  // Menuband ein- oder ausbleden
+  Menu.setApplicationMenu(null);
+  mainWindow.setMenuBarVisibility(false);
+  mainWindow.removeMenu();
 
   mainWindow.loadURL(`file://${path.join(__dirname, '../dist/index.html')}`);
 }

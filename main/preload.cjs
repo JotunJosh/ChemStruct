@@ -1,12 +1,14 @@
-const { contextBridge, ipcRenderer } = require("electron");
+const { contextBridge, ipcRenderer, app } = require("electron");
 
 console.log("✅ Preload-Skript wurde ausgeführt!");
 
 contextBridge.exposeInMainWorld("api", {
   // 🔄 JSON-Dateien zentral verwalten
   readJsonFile: (filename) => ipcRenderer.invoke("readJsonFile", { path: filename }),
-  writeJsonFile: (filename, data) => ipcRenderer.invoke("writeJsonFile", { path: filename, data }),
+  writeJsonFile: (filename, data) => ipcRenderer.invoke("writeJsonFile", filename, data),
   resetJsonFile: (filename) => ipcRenderer.invoke("resetJsonFile", filename),
+  copyOriginalToUserData: (filename) => ipcRenderer.invoke('copyOriginalToUserData', filename),
+  copyUserDataToOriginal: (filename) => ipcRenderer.invoke('copyUserDataToOriginal', filename),
 
   // 📁 Für Import/Export
   readFile: (filePath) => ipcRenderer.invoke("readFile", filePath),
@@ -41,5 +43,6 @@ contextBridge.exposeInMainWorld("api", {
 
 // Fallback für Entwicklungsmodus im Frontend
 contextBridge.exposeInMainWorld("appInfo", {
-  isDev: !process.env.NODE_ENV || process.env.NODE_ENV === "development",
+  //isDev: !process.env.NODE_ENV || process.env.NODE_ENV === "development",
+  isDev: !app.isPackaged,
 });

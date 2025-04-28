@@ -18,3 +18,7 @@
 
 - QoL Besserer Popup Katalog, mit einstellungen - Anpassung api - Anpassung Im und Export Funktion - Fix fuer SweatShop
 
+📦 v0.6.2 – 28.4.2025
+
+- Anpassung IPC Handler für Speichern und zurücksetzen, Anpassung div. Objekte
+
